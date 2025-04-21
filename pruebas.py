@@ -1,67 +1,49 @@
-from gpiozero import PWMLED, PWMOutputDevice
+from gpiozero import PWMLED
 from time import sleep
-import random
+import itertools
 
-# Pines BCM
+# Pines BCM de los LEDs (ajusta si necesitas)
 led_red = PWMLED(17)
 led_green = PWMLED(27)
 led_blue = PWMLED(22)
-buzzer = PWMOutputDevice(12)
 
-# Notas musicales (frecuencias aproximadas)
-notes = {
-    'B4': 494, 'A4': 440, 'G4': 392, 'E4': 330, 'D4': 294, 'C4': 262,
-    'F4': 349, 'G5': 784, 'E5': 659, 'D5': 587, 'C5': 523, 'A5': 880, 'R': 0
-}
-
-# Melodía simplificada
-melody = [
-    ('E4', 0.5), ('E4', 0.5), ('E4', 1.0),
-    ('E4', 0.5), ('E4', 0.5), ('E4', 1.0),
-    ('E4', 0.5), ('G4', 0.5), ('C4', 0.5), ('D4', 0.5),
-    ('E4', 1.5),
+# Mezcla de colores básicos (0.0 = apagado, 1.0 = encendido)
+colores = [
+    (1, 0, 0),    # Rojo
+    (0, 1, 0),    # Verde
+    (0, 0, 1),    # Azul
+    (1, 1, 0),    # Amarillo
+    (1, 0, 1),    # Magenta
+    (0, 1, 1),    # Cian
+    (1, 1, 1),    # Blanco
+    (0.2, 0.5, 1),# Azul claro
+    (0.9, 0.3, 0.7),  # Rosa fuerte
+    (0.5, 0.2, 0.8),  # Violeta
+    (0.5, 0.5, 0.5),  # Gris
+    (1, 0.5, 0),      # Naranja
+    (0.5, 1, 0),      # Verde claro
+    (0.5, 0.5, 0),    # Amarillo claro
+    (0.2, 0.2, 0.2),  # Gris oscuro
+    (0.5, 0.5, 1),    # Azul oscuro
+    (0.8, 0.8, 0),    # Amarillo fuerte
+    (0.2, 0.8, 0.2),  # Verde fuerte
+    (0.8, 0.2, 0.2),  # Rojo fuerte
+    (1, 1, 1),        # Blanco brillante
+    (0, 0, 0)     # Apagado
 ]
 
-# Repeticiones de la canción
-REPETICIONES = 2
-
-def set_color(r, g, b):
-    led_red.value = r
-    led_green.value = g
-    led_blue.value = b
-
-def play_note(note, duration):
-    freq = notes[note]
-    if freq == 0:
-        set_color(0, 0, 0)
-        sleep(duration)
-        return
-
-    # Establecer frecuencia en el buzzer
-    buzzer.frequency = freq  # Establecer la frecuencia del buzzer
-    
-    # Generar el tono
-    buzzer.value = 0.5  # Establecer ciclo de trabajo al 50% para generar el tono
-
-    # Cambiar color de los LEDs
-    r = random.uniform(0.3, 1.0)
-    g = random.uniform(0.3, 1.0)
-    b = random.uniform(0.3, 1.0)
-    set_color(r, g, b)
-
-    # Reproducir el tono por la duración de la nota
-    sleep(duration)
-    buzzer.off()  # Apagar el buzzer
-    set_color(0, 0, 0)  # Apagar los LEDs
-    sleep(0.05)  # Pausa entre notas
-
 try:
-    for _ in range(REPETICIONES):
-        for note, duration in melody:
-            play_note(note, duration)
+    while True:
+        for r, g, b in colores:
+            led_red.value = r
+            led_green.value = g
+            led_blue.value = b
+            sleep(1.5)
 
 except KeyboardInterrupt:
-    print("Interrumpido por el usuario")
+    print("Interrumpido")
+
 finally:
-    set_color(0, 0, 0)
-    buzzer.off()
+    led_red.value = 0
+    led_green.value = 0
+    led_blue.value = 0

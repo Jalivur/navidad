@@ -14,7 +14,7 @@ notes = {
     'C5': 523.25, 'R': 0  # R es silencio
 }
 
-# Melodía de "Noche de Paz" (Silent Night)
+# Melodía de "Estrellita del lugar"
 melody = [
     ('C4', 0.5), ('C4', 0.5), ('G4', 0.5), ('G4', 0.5), 
     ('A4', 0.5), ('A4', 0.5), ('G4', 1.0),  # Primera línea
