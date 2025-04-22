@@ -22,13 +22,26 @@ lcd = character_lcd.Character_LCD_Mono(
     lcd_columns, lcd_rows
 )
 
-# Pines GPIO para LEDs y buzzer
+# 👇 Definir la letra "ñ" como caracter personalizado (5x8)
+custom_ñ = [
+    0b00100,
+    0b01010,
+    0b00001,
+    0b01111,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b00000
+]
+lcd.create_char(0, custom_ñ)  # guardar en posición 0
+
+# LEDs y buzzer
 led_red = PWMLED(17)
 led_green = PWMLED(27)
 led_blue = PWMLED(22)
 buzzer = PWMOutputDevice(12)
 
-# Notas latinas
+# Notas con sus frecuencias
 notas_latinas = {
     'Do3': 130.81, 'Do#3': 138.59, 'Re3': 146.83, 'Re#3': 155.56, 'Mi3': 164.81,
     'Fa3': 174.61, 'Fa#3': 185.0, 'Sol3': 196.0, 'Sol#3': 207.65, 'La3': 220.0,
@@ -45,45 +58,32 @@ notas_latinas = {
     'Do8': 4186.01, 'Do#8': 4434.92, 'Re8': 4698.64, 'Re#8': 4978.03, 'R': 0
 }
 
-# Duración de figuras
-BPM = 180
+# Ritmos en negras, corcheas, etc.
+BPM = 190
 BEAT = 60 / BPM
 
 dur = {
-    'w': 4.0,
-    'h': 2.0,
-    'hd': 3.0,
-    'q': 1.0,
-    'qd': 1.5,
-    'e': 0.5,
-    'ed': 0.75
+    'w': 4.0, 'h': 2.0, 'hd': 3.0,
+    'q': 1.0, 'qd': 1.5, 'e': 0.5,
+    'ed': 0.75, 's': 0.25
 }
 
-# 🎵 Melodía completa CON silencios
+# 🎶 Cumpleaños Feliz con "ñ" personalizada (\x00)
 melody = [
-    # --- Estrofa ---
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
-    ('Mi4', 'q'), ('Sol4', 'q'), ('Do4', 'q'), ('Re4', 'q'),
-    ('Mi4', 'w'), ('R', 'q'),
+    ('Do4', 'q', 'Cum'), ('Do4', 'q', 'ple'), ('Re4', 'q', 'a'),
+    ('Do4', 'qd', '\x00os'), ('Fa4', 'q', 'fe'), ('Mi4', 'h', 'liz'),
 
-    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'ed'), ('Fa4', 'e'),
-    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'e'), ('Mi4', 'e'),
-    ('Mi4', 'q'), ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'h'),
+    ('Do4', 'q', 'Cum'), ('Do4', 'q', 'ple'), ('Re4', 'q', 'a'),
+    ('Do4', 'qd', '\x00os'), ('Sol4', 'q', 'fe'), ('Fa4', 'h', 'liz'),
 
-    # --- Estribillo ---
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'),
-    ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'), ('Sol4', 'q'),
-    ('Do4', 'q'), ('Re4', 'q'), ('Mi4', 'h'), ('R', 'q'),
+    ('Do4', 'q', 'Te'), ('Do4', 'q', 'De'), ('Do5', 'qd', 'se'), ('La4', 'q', 'a'), ('Fa4', 'q', 'mos'),
+    ('Mi4', 'q', 'Pa'), ('Re4', 'h', 'blo'), ('La#4', 'q', 'cum'), ('La#4', 'q', 'ple'),
 
-    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'),
-    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'w')
+    ('La4', 'q', 'a'), ('Fa4', 'qd', '\x00os'), ('Sol4', 'q', 'fe'), ('Fa4', 'h', 'liz'),
+    ('R', 'q', ''),  # silencio final
 ]
 
-# Colores rotativos
+# Colores arcoíris para LEDs
 color_sequence = [
     (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
     (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
@@ -92,21 +92,21 @@ color_sequence = [
 ]
 color_cycle = itertools.cycle(color_sequence)
 
-# Funciones
+# Función para cambiar colores
 def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
 
-def play_note(note, figure):
+# Función para reproducir cada nota
+def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
-    
-    # Mostrar en la consola y en el LCD
-    print(f"Tocando: {note} ({figure}) - {duration:.2f}s")
-    lcd.message = f"Tocando: {note} ({figure})"
-    #sleep(2)
-    
+
+    print(f"{note} ({figure}) -> {lyric}")
+    lcd.clear()
+    lcd.message = f"{note} ({figure})\n {lyric}"
+
     if freq == 0:
         buzzer.off()
         set_color(0, 0, 0)
@@ -123,21 +123,34 @@ def play_note(note, figure):
     set_color(0, 0, 0)
     sleep(0.05)
 
-# Reproducción principal
+# 🎉 Reproducción principal
 try:
-    for note, figure in melody:
-        play_note(note, figure)
+    lcd.clear()
+    lcd.message = "Feliz cumplea\x00os\nPABLO"
+    sleep(2)
+    lcd.clear()
+    lcd.message = "Mama Y Papa\nTe quieren"
+    sleep(2)
+    lcd.clear()
+
+    for note, figure, lyric in melody:
+        play_note(note, figure, lyric)
+    sleep(1)
+    for note, figure, lyric in melody:
+        play_note(note, figure, lyric)
+
 except KeyboardInterrupt:
     print("Interrumpido.")
     lcd.message = "Interrumpido."
     sleep(1)
     lcd.clear()
+
 finally:
     buzzer.off()
     set_color(0, 0, 0)
-    print("¡Jingle Bells completo con pausas! 🎄🎶")
-    lcd.message = "¡Jingle Bells\ncompleto!"
+    lcd.message = "Felicidades\nPablo"
     sleep(3)
     lcd.clear()
-
-
+    lcd.message = "Mama Y Papa\nTe quieren"
+    sleep(3)
+    lcd.clear() 
