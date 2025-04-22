@@ -91,20 +91,24 @@ dur = {
 
 # 🎵 Melodía completa CON silencios
 melody = [
+    # --- Primer estribillo ---
     ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
     ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
     ('Mi4', 'q'), ('Sol4', 'q'), ('Do4', 'q'), ('Re4', 'q'),
     ('Mi4', 'w'), ('R', 'q'),
 
-    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'ed'), ('Fa4', 'e'),
-    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'e'), ('Mi4', 'e'),
+    # --- Segundo estribillo (final corregido) ---
+    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'),
+    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'),
     ('Mi4', 'q'), ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'h'),
+    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'e'),
 
+    # --- Tercer estribillo ---
     ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'),
     ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'), ('Sol4', 'q'),
     ('Do4', 'q'), ('Re4', 'q'), ('Mi4', 'h'), ('R', 'q'),
 
+    # --- Cuarto estribillo ---
     ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'),
     ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'),
     ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
