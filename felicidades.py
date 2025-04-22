@@ -26,14 +26,26 @@ lcd = character_lcd.Character_LCD_Mono(
 custom_ñ = [
     0b00100,
     0b01010,
-    0b00001,
-    0b01111,
+    0b10000,
+    0b1110,
     0b10001,
     0b10001,
     0b10001,
     0b00000
 ]
 lcd.create_char(0, custom_ñ)  # guardar en posición 0
+# 👇 Definir el caracter "¡" como caracter personalizado (5x8)
+custom_ex = [
+    0b00000,
+    0b00100,
+    0b00000,
+    0b00000,
+    0b00100,
+    0b00100,
+    0b00100,
+    0b00100
+]
+lcd.create_char(1, custom_ex)  # guardar en posición 1
 
 # LEDs y buzzer
 led_red = PWMLED(17)
@@ -103,7 +115,7 @@ def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
 
-    print(f"{note} ({figure}) -> {lyric}")
+    #print(f"{note} ({figure}) -> {lyric}")
     lcd.clear()
     lcd.message = f"{note} ({figure})\n {lyric}"
 
@@ -126,11 +138,11 @@ def play_note(note, figure, lyric):
 # 🎉 Reproducción principal
 try:
     lcd.clear()
-    lcd.message = "Feliz cumplea\x00os\nPABLO"
-    sleep(2)
+    lcd.message = "\x01Feliz cumplea\x00os\nPABLO!"
+    sleep(3)
     lcd.clear()
     lcd.message = "Mama Y Papa\nTe quieren"
-    sleep(2)
+    sleep(3)
     lcd.clear()
 
     for note, figure, lyric in melody:
@@ -140,7 +152,7 @@ try:
         play_note(note, figure, lyric)
 
 except KeyboardInterrupt:
-    print("Interrumpido.")
+    #print("Interrumpido.")
     lcd.message = "Interrumpido."
     sleep(1)
     lcd.clear()
@@ -148,9 +160,9 @@ except KeyboardInterrupt:
 finally:
     buzzer.off()
     set_color(0, 0, 0)
-    lcd.message = "Felicidades\nPablo"
+    lcd.message = "\x01Felicidades\nPablo!"
     sleep(3)
     lcd.clear()
-    lcd.message = "Mama Y Papa\nTe quieren"
+    lcd.message = "\x01Mama Y Papa\nTe quieren!"
     sleep(3)
     lcd.clear() 
