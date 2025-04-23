@@ -149,7 +149,7 @@ try:
     for note, figure, lyric in melody:
         play_note(note, figure, lyric)
 except KeyboardInterrupt:
-    print("Interrumpido.")
+    #print("Interrumpido.")
     lcd.clear()
     lcd.message = "Interrumpido."
     lcd.clear()

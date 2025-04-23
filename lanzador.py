@@ -13,6 +13,7 @@ scripts = [
     "/home/jalivur/Desktop/navidad/estrellita.py",
     "/home/jalivur/Desktop/navidad/jingelsbells.py",
     "/home/jalivur/Desktop/navidad/nochedepaz.py",
+    "/home/jalivur/Desktop/navidad/peces.py",
     "/home/jalivur/Desktop/navidad/felicidades.py"
 ]
 
@@ -42,7 +43,7 @@ def al_soltar():
         if not ejecutando:
             hilo = threading.Thread(target=ejecutar_todos)
             hilo.start()
-    elif duracion > 10:
+    elif duracion > 5:
         print("🔴 Pulsación larga detectada. Cerrando programa...")
         cerrar_programa()
 
