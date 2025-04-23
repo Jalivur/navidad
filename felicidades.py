@@ -1,6 +1,7 @@
 from gpiozero import PWMLED, PWMOutputDevice
 from time import sleep
 import itertools
+import threading
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
@@ -22,19 +23,19 @@ lcd = character_lcd.Character_LCD_Mono(
     lcd_columns, lcd_rows
 )
 
-# 👇 Definir la letra "ñ" como caracter personalizado (5x8)
+# Caracteres personalizados
 custom_ñ = [
     0b00100,
     0b01010,
     0b10000,
-    0b1110,
+    0b01110,
     0b10001,
     0b10001,
     0b10001,
     0b00000
 ]
-lcd.create_char(0, custom_ñ)  # guardar en posición 0
-# 👇 Definir el caracter "¡" como caracter personalizado (5x8)
+lcd.create_char(0, custom_ñ)
+
 custom_ex = [
     0b00000,
     0b00100,
@@ -45,7 +46,7 @@ custom_ex = [
     0b00100,
     0b00100
 ]
-lcd.create_char(1, custom_ex)  # guardar en posición 1
+lcd.create_char(1, custom_ex)
 
 # LEDs y buzzer
 led_red = PWMLED(17)
@@ -53,7 +54,7 @@ led_green = PWMLED(27)
 led_blue = PWMLED(22)
 buzzer = PWMOutputDevice(12)
 
-# Notas con sus frecuencias
+# Notas musicales
 notas_latinas = {
     'Do3': 130.81, 'Do#3': 138.59, 'Re3': 146.83, 'Re#3': 155.56, 'Mi3': 164.81,
     'Fa3': 174.61, 'Fa#3': 185.0, 'Sol3': 196.0, 'Sol#3': 207.65, 'La3': 220.0,
@@ -70,17 +71,16 @@ notas_latinas = {
     'Do8': 4186.01, 'Do#8': 4434.92, 'Re8': 4698.64, 'Re#8': 4978.03, 'R': 0
 }
 
-# Ritmos en negras, corcheas, etc.
+# Duraciones
 BPM = 190
 BEAT = 60 / BPM
-
 dur = {
     'w': 4.0, 'h': 2.0, 'hd': 3.0,
     'q': 1.0, 'qd': 1.5, 'e': 0.5,
     'ed': 0.75, 's': 0.25
 }
 
-# 🎶 Cumpleaños Feliz con "ñ" personalizada (\x00)
+# Letra y melodía
 melody = [
     ('Do4', 'q', 'Cum'), ('Do4', 'q', 'ple'), ('Re4', 'q', 'a'),
     ('Do4', 'qd', '\x00os'), ('Fa4', 'q', 'fe'), ('Mi4', 'h', 'liz'),
@@ -92,10 +92,10 @@ melody = [
     ('Mi4', 'q', 'Pa'), ('Re4', 'h', 'blo'), ('La#4', 'q', 'cum'), ('La#4', 'q', 'ple'),
 
     ('La4', 'q', 'a'), ('Fa4', 'qd', '\x00os'), ('Sol4', 'q', 'fe'), ('Fa4', 'h', 'liz'),
-    ('R', 'q', ''),  # silencio final
+    ('R', 'q', '')
 ]
 
-# Colores arcoíris para LEDs
+# Colores arcoíris
 color_sequence = [
     (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
     (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
@@ -104,38 +104,52 @@ color_sequence = [
 ]
 color_cycle = itertools.cycle(color_sequence)
 
-# Función para cambiar colores
 def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
 
-# Función para reproducir cada nota
+def fade_to_color_async(r, g, b, steps=20, delay=0.01):
+    def fade():
+        start_r = led_red.value
+        start_g = led_green.value
+        start_b = led_blue.value
+
+        for i in range(steps + 1):
+            factor = i / steps
+            current_r = start_r + (r - start_r) * factor
+            current_g = start_g + (g - start_g) * factor
+            current_b = start_b + (b - start_b) * factor
+            set_color(current_r, current_g, current_b)
+            sleep(delay)
+
+    threading.Thread(target=fade, daemon=True).start()
+
 def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
 
-    #print(f"{note} ({figure}) -> {lyric}")
     lcd.clear()
     lcd.message = f"{note} ({figure})\n {lyric}"
 
     if freq == 0:
         buzzer.off()
-        set_color(0, 0, 0)
+        fade_to_color_async(0, 0, 0)
         sleep(duration)
         return
 
     buzzer.frequency = freq
     buzzer.value = 0.5
+
     r, g, b = next(color_cycle)
-    set_color(r, g, b)
+    fade_to_color_async(r, g, b)
 
     sleep(duration)
     buzzer.off()
-    set_color(0, 0, 0)
+    fade_to_color_async(0, 0, 0)
     sleep(0.05)
 
-# 🎉 Reproducción principal
+# Ejecución principal
 try:
     lcd.clear()
     lcd.message = "\x01Feliz cumplea\x00os\nPABLO!"
@@ -152,7 +166,6 @@ try:
         play_note(note, figure, lyric)
 
 except KeyboardInterrupt:
-    #print("Interrumpido.")
     lcd.message = "Interrumpido."
     sleep(1)
     lcd.clear()
@@ -165,4 +178,4 @@ finally:
     lcd.clear()
     lcd.message = "\x01Mama Y Papa\nTe quieren!"
     sleep(3)
-    lcd.clear() 
+    lcd.clear()
