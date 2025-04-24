@@ -82,7 +82,7 @@ class LEDController(QWidget):
         self.mode_selector = QComboBox()
         self.modes = [
             "Manual", "Arcoíris", "Destello", "Fade Loop", "Estroboscópico",
-            "Pulso Senoidal", "Secuencia Automática", "Color Cíclico RGB"
+            "Pulso Senoidal", "Secuencia Automática", "Ciclico RGB"
         ]
         self.mode_selector.addItems(self.modes)
         self.mode_selector.currentTextChanged.connect(self.change_mode)
@@ -96,7 +96,7 @@ class LEDController(QWidget):
         self.duration_label = QLabel("Duración por efecto (segundos):")
         self.duration_spinner = QSpinBox()
         self.duration_spinner.setRange(1, 60)
-        self.duration_spinner.setValue(5)
+        self.duration_spinner.setValue(35)
         self.duration_spinner.valueChanged.connect(self.update_duration)
 
         self.lcd_label = QLabel("Mensaje en LCD:")
@@ -119,7 +119,12 @@ class LEDController(QWidget):
             (0.5, 0.0, 1.0), (1.0, 0.0, 1.0), (1.0, 0.0, 0.5),
             (0.8, 0.2, 0.6), (0.6, 0.4, 0.8), (0.3, 0.3, 1.0),
             (0.2, 0.6, 1.0), (0.1, 0.9, 0.5), (0.9, 0.9, 0.3),
-            (1.0, 0.8, 0.1), (0.7, 0.3, 0.2), (0.4, 0.2, 0.1)
+            (1.0, 0.8, 0.1), (0.7, 0.3, 0.2), (0.4, 0.2, 0.1), 
+            (0.2, 0.1, 0.3), (0.1, 0.2, 0.4), (0.3, 0.5, 0.6),
+            (0.5, 0.7, 0.8), (0.7, 0.9, 1.0), (1.0, 1.0, 1.0), 
+            (0.9, 0.8, 0.7), (0.7, 0.6, 0.5), (0.5, 0.4, 0.3),
+            (0.3, 0.2, 0.1), (0.1, 0.1, 0.1), (0.2, 0.2, 0.2),
+            (0.4, 0.4, 0.4), (0.6, 0.6, 0.6), (0.8, 0.8, 0.8)
         ])
 
         self.rgb_cycle_order = ["RGB", "RBG", "GRB", "GBR", "BRG", "BGR"]
@@ -250,7 +255,7 @@ class LEDController(QWidget):
             val = (math.sin(self.pulse_step / 10.0) + 1) / 2.0 * intensity
             set_color(r * val, g * val, b * val)
 
-        elif mode == "Color Cíclico RGB":
+        elif mode == "Ciclico RGB":
             self.rgb_cycle_step = getattr(self, 'rgb_cycle_step', 0)
             self.rgb_cycle_step = (self.rgb_cycle_step + 1) % len(self.rgb_cycle_order)
             order = self.rgb_cycle_order[self.rgb_cycle_step]

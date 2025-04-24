@@ -6,6 +6,7 @@ import itertools
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
+import threading
 
 # Pines del LCD
 lcd_rs = digitalio.DigitalInOut(board.D26)
@@ -90,33 +91,41 @@ dur = {
 # Melodía fiel de “Noche de Paz” según partitura
 melody = [
     # 1. "Noche de paz"
-    ('Do4', 'q', 'No'), ('Re4', 'q', 'che'), ('Mi4', 'q', 'de'),
-    ('Fa4', 'h', 'paz'),
+    ('Sol5', 'qd', 'No'), ('La5', 'e', 'che'), ('Sol5', 'q', 'de'),
+    ('Mi5', 'hd', 'paz'),
 
     # 2. "noche de amor"
-    ('Fa4', 'q', 'no'), ('Mi4', 'q', 'che'), ('Re4', 'q', 'de'),
-    ('Do4', 'q', 'a'), ('Si3', 'h', 'mor'),
+    ('Sol5', 'qd', 'No'), ('La5', 'e', 'che'), ('Sol5', 'q', 'de_a'),
+    ('Mi5', 'hd', 'mor'),
 
     # 3. "todo duerme en derredor"
-    ('Mi4', 'q', 'to'), ('Fa4', 'q', 'do'), ('Sol4', 'q', 'duer'),
-    ('Mi4', 'q', 'me'), ('Re4', 'q', 'en'), ('Do4', 'q', 'der'),
-    ('Si3', 'q', 're'), ('Do4', 'h', 'dor'),
+    ('Re6', 'h', 'to'), ('Re6', 'q', 'do'), ('Si5', 'h', 'duer'),
+    ('Si5', 'q', 'me_en'), ('Do6', 'h', 're'), ('Do6', 'q', 'den'),
+    ('Sol5', 'hd', 'dor'), 
 
     # 4. "entre los astros que esparcen su luz"
-    ('Mi4', 'q', 'en'), ('Fa4', 'q', 'tre'), ('Sol4', 'q', 'los'),
-    ('Fa4', 'q', 'as'), ('Mi4', 'q', 'tros'), ('Re4', 'q', 'que'),
-    ('Do4', 'q', 'es'), ('Si3', 'q', 'par'), ('Do4', 'q', 'cen'),
-    ('Re4', 'q', 'su'), ('Mi4', 'h', 'luz'),
+    ('La5', 'h', 'en'), ('La5', 'q', 'tre_los'), ('Do6', 'qd', 'as'),
+    ('Si5', 'e', 'tros'), ('La5', 'q', 'que_es'), ('Sol5', 'qd', 'par'),
+    ('La5', 'e', 'cen'), ('Sol5', 'q', 'su'), ('Mi5', 'hd', 'luz'),
+
 
     # 5. "bella, anunciando al niño Jesús"
-    ('Fa4', 'q', 'bel'), ('Mi4', 'q', 'la'), ('Re4', 'q', 'anun'),
-    ('Do4', 'q', 'ci'), ('Si3', 'q', 'an'), ('Do4', 'q', 'do'),
-    ('Re4', 'q', 'al'), ('Mi4', 'q', 'ni'), ('Fa4', 'q', 'ño'),
-    ('Sol4', 'q', 'Je'), ('La4', 'h', 'sús')
+    ('La5', 'h', 'be'), ('La5', 'q', 'lla_anun'), ('Do6', 'qd', 'cian'),
+    ('Si5', 'e', 'do'), ('La5', 'q', 'al'), ('Sol5', 'qd', 'ni'),
+    ('La5', 'e', '\x00o'), ('Sol5', 'q', 'Je'), ('Mi5', 'hd', 'sus'),
+    
+    # 6. "brilla en la noche de paz"
+    ('Re6', 'qd', 'be'), ('Re6', 'e', 'lla_anun'), ('Re6', 'q', 'cian'),
+    ('Fa6', 'qd', 'do'), ('Re6', 'e', 'al'), ('Si6', 'q', 'ni'),
+    ('Do6', 'hd', '\x00o'), ('Mi5', 'hd', 'Je'),
+    # 7. "brilla la estrella de paz"
+    ('Do6', 'qd', 'be'), ('Sol5', 'e', 'lla_anun'), ('Mi5', 'q', 'cian'),
+    ('Sol5', 'qd', 'do'), ('Fa5', 'e', 'al'), ('Re5', 'q', 'ni'),
+    ('Do5', 'hd', '\x00o')
 ]
 
 # Número de repeticiones de la canción
-REPETICIONES = 2
+REPETICIONES = 1
 
 # Función para mezclar colores tipo arcoíris
 def rainbow_color():
@@ -129,7 +138,21 @@ def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
+def fade_to_color_async(r, g, b, steps=20, delay=0.01):
+    def fade():
+        start_r = led_red.value
+        start_g = led_green.value
+        start_b = led_blue.value
 
+        for i in range(steps + 1):
+            factor = i / steps
+            current_r = start_r + (r - start_r) * factor
+            current_g = start_g + (g - start_g) * factor
+            current_b = start_b + (b - start_b) * factor
+            set_color(current_r, current_g, current_b)
+            sleep(delay)
+
+    threading.Thread(target=fade, daemon=True).start()
 # Reproduce una nota con duración y LEDs
 def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
@@ -141,7 +164,7 @@ def play_note(note, figure, lyric):
     lcd.message = f"{note},({figure} - {duration:.2f}s)\n{lyric}"
     if freq == 0:
         buzzer.off()
-        set_color(0, 0, 0)
+        fade_to_color_async(0, 0, 0)
         sleep(duration)
         return
 
@@ -150,11 +173,11 @@ def play_note(note, figure, lyric):
 
     # Cambiar color en cada nota (arcoíris)
     r, g, b = rainbow_color()
-    set_color(r, g, b)
+    fade_to_color_async(r, g, b)
 
     sleep(duration)
     buzzer.off()
-    set_color(0, 0, 0)
+    fade_to_color_async(0, 0, 0)
     sleep(0.05)
 
 # Reproducción principal

@@ -4,6 +4,8 @@ import itertools
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
+import threading
+
 
 # Pines del LCD
 lcd_rs = digitalio.DigitalInOut(board.D26)
@@ -59,18 +61,54 @@ notas_latinas = {
 
 # Melodía de "Estrellita del lugar"
 melody = [
-
+    # 'Estrellita, ¿dónde estás?'
     ('Do4', 'q', 'Es'), ('Do4', 'q', 'tre'), ('Sol4', 'q', 'lli'), ('Sol4', 'q', 'ta'),
-    ('La4', 'q', 'dón'), ('La4', 'q', 'de'), ('Sol4', 'h', 'es'),
-
-    ('Fa4', 'q', 'tás'), ('Fa4', 'q', 'en'), ('Mi4', 'q', 'el'), ('Mi4', 'q', 'cie'),
-    ('Re4', 'q', 'lo'), ('Re4', 'q', 'az'), ('Do4', 'h', 'ul'),
-
-    ('Sol4', 'q', 'co'), ('Sol4', 'q', 'mo'), ('Fa4', 'q', 'un'), ('Fa4', 'q', 'di'),
-    ('Mi4', 'q', 'a'), ('Mi4', 'q', 'man'), ('Re4', 'h', 'te'),
-
-    ('Sol4', 'q', 'en'), ('Sol4', 'q', 'el'), ('Fa4', 'q', 'cie'), ('Fa4', 'q', 'lo'),
-    ('Mi4', 'q', 'tan'), ('Mi4', 'q', 'to'), ('Do4', 'h', 'rás'),
+    ('La4', 'q', 'dón'), ('La4', 'q', 'de_es'), ('Sol4', 'h', 'tas'),
+    # 'Me pregunto, ¿qué serás?'
+    ('Fa4', 'q', 'Me'), ('Fa4', 'q', 'pre'), ('Mi4', 'q', 'gun'), ('Mi4', 'q', 'to'),
+    ('Re4', 'q', 'que'), ('Re4', 'q', 'se'), ('Do4', 'h', 'as'),
+    # 'En el cielo y en el mar'
+    ('Sol4', 'q', 'En'), ('Sol4', 'q', 'el'), ('Fa4', 'q', 'cie'), ('Fa4', 'q', 'lo'),
+    ('Mi4', 'q', 'y_en'), ('Mi4', 'q', 'el'), ('Re4', 'h', 'mar'),
+    # 'Un diamante de verdad'
+    ('Sol4', 'q', 'Un'), ('Sol4', 'q', 'dia'), ('Fa4', 'q', 'man'), ('Fa4', 'q', 'te'),
+    ('Mi4', 'q', 'de'), ('Mi4', 'q', 'ver'), ('Re4', 'h', 'dad'),
+    # 'Estrellita, ¿dónde estás?'
+    ('Do4', 'q', 'Es'), ('Do4', 'q', 'tre'), ('Sol4', 'q', 'lli'), ('Sol4', 'q', 'ta'),
+    ('La4', 'q', 'dón'), ('La4', 'q', 'de_es'), ('Sol4', 'h', 'tas'),
+    # 'Me pregunto, ¿qué serás?'
+    ('Fa4', 'q', 'Me'), ('Fa4', 'q', 'pre'), ('Mi4', 'q', 'gun'), ('Mi4', 'q', 'to'),
+    ('Re4', 'q', 'que'), ('Re4', 'q', 'se'), ('Do4', 'h', 'as'),
+    # 'Cuando el sol se ha ido ya' 
+    ('Sol4', 'q', 'Cuan'), ('Sol4', 'q', 'do'), ('Fa4', 'q', 'el'), ('Fa4', 'q', 'sol'),
+    ('Mi4', 'q', 'se-ha'), ('Mi4', 'q', 'ido'), ('Re4', 'h', 'ya'),
+    # 'cuando nada brilla mas' 
+    ('Sol4', 'q', 'Cuan'), ('Sol4', 'q', 'do'), ('Fa4', 'q', 'na'), ('Fa4', 'q', 'da'),
+    ('Mi4', 'q', 'bri'), ('Mi4', 'q', 'lla'), ('Re4', 'h', 'mas'),
+    # 'Tu nos muestras tu brillar'
+    ('Sol4', 'q', 'Tu'), ('Sol4', 'q', 'nos'), ('Fa4', 'q', 'mues'), ('Fa4', 'q', 'tras'),
+    ('Mi4', 'q', 'tu'), ('Mi4', 'q', 'bri'), ('Re4', 'h', 'llar'),
+    # 'Brillas, brillas sin cesar'
+    ('Sol4', 'q', 'Bri'), ('Sol4', 'q', 'llas'), ('Fa4', 'q', 'bri'), ('Fa4', 'q', 'llas'),
+    ('Mi4', 'q', 'sin'), ('Mi4', 'q', 'ce'), ('Re4', 'h', 'sar'),
+    # 'Estrellita, ¿dónde estás?'
+    ('Do4', 'q', 'Es'), ('Do4', 'q', 'tre'), ('Sol4', 'q', 'lli'), ('Sol4', 'q', 'ta'),
+    ('La4', 'q', 'dón'), ('La4', 'q', 'de_es'), ('Sol4', 'h', 'tas'),
+    # 'Me pregunto, ¿qué serás?'
+    ('Fa4', 'q', 'Me'), ('Fa4', 'q', 'pre'), ('Mi4', 'q', 'gun'), ('Mi4', 'q', 'to'),
+    ('Re4', 'q', 'que'), ('Re4', 'q', 'se'), ('Do4', 'h', 'as'),
+    # 'Estrellita, ¿dónde estás?'
+    ('Do4', 'q', 'Es'), ('Do4', 'q', 'tre'), ('Sol4', 'q', 'lli'), ('Sol4', 'q', 'ta'),
+    ('La4', 'q', 'dón'), ('La4', 'q', 'de_es'), ('Sol4', 'h', 'tas'),
+    # 'Me pregunto, ¿qué serás?'
+    ('Fa4', 'q', 'Me'), ('Fa4', 'q', 'pre'), ('Mi4', 'q', 'gun'), ('Mi4', 'q', 'to'),
+    ('Re4', 'q', 'que'), ('Re4', 'q', 'se'), ('Do4', 'h', 'as'),
+    # 'En el cielo y en el mar'
+    ('Sol4', 'q', 'En'), ('Sol4', 'q', 'el'), ('Fa4', 'q', 'cie'), ('Fa4', 'q', 'lo'),
+    ('Mi4', 'q', 'y_en'), ('Mi4', 'q', 'el'), ('Re4', 'h', 'mar'),
+    # 'Un diamante de verdad'
+    ('Sol4', 'q', 'Un'), ('Sol4', 'q', 'dia'), ('Fa4', 'q', 'man'), ('Fa4', 'q', 'te'),
+    ('Mi4', 'q', 'de'), ('Mi4', 'q', 'ver'), ('Re4', 'h', 'dad'),
 
 
 ]
@@ -93,7 +131,15 @@ color_sequence = [
     (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
     (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
     (0.8, 0.5, 1.0), (0.5, 1.0, 0.5), (1.0, 1.0, 1.0),
-    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0)
+    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0),
+    (0.5, 0.2, 0.8), (0.8, 0.2, 0.5), (0.2, 0.5, 0.8),
+    (0.5, 1.0, 1.0), (1.0, 1.0, 0.5), (1.0, 0.2, 1.0),
+    (1.0, 0.8, 0.2), (1.0, 1.0, 0), (0.2, 1.0, 0),
+    (0.2, 0.5, 1.0), (0.5, 0.2, 1.0), (1.0, 0.5, 0),
+    (1.0, 0.2, 0), (1.0, 1.0, 1), (1.0, 1.0, 1),
+    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0),
+    (0.5, 0.2, 0.8), (0.8, 0.2, 0.5), (0.2, 0.5, 0.8),
+    (0.5, 1.0, 1.0), (1.0, 1.0, 0.5), (1.0, 0.2, 1.0),
 ]
 color_cycle = itertools.cycle(color_sequence)
 
@@ -103,6 +149,22 @@ def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
+    
+def fade_to_color_async(r, g, b, steps=20, delay=0.01):
+    def fade():
+        start_r = led_red.value
+        start_g = led_green.value
+        start_b = led_blue.value
+
+        for i in range(steps + 1):
+            factor = i / steps
+            current_r = start_r + (r - start_r) * factor
+            current_g = start_g + (g - start_g) * factor
+            current_b = start_b + (b - start_b) * factor
+            set_color(current_r, current_g, current_b)
+            sleep(delay)
+
+    threading.Thread(target=fade, daemon=True).start()
 
 def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
@@ -115,18 +177,18 @@ def play_note(note, figure, lyric):
 
     if freq == 0:
         buzzer.off()
-        set_color(0, 0, 0)
+        fade_to_color_async(0, 0, 0)
         sleep(duration)
         return
 
     buzzer.frequency = freq
     buzzer.value = 0.5
     r, g, b = next(color_cycle)
-    set_color(r, g, b)
+    fade_to_color_async(r, g, b)
 
     sleep(duration)
     buzzer.off()
-    set_color(0, 0, 0)
+    fade_to_color_async(0, 0, 0)
     sleep(0.05)
 
 # Reproducción principal
