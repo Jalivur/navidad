@@ -4,6 +4,7 @@ import itertools
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
+import threading
 
 # Pines del LCD
 lcd_rs = digitalio.DigitalInOut(board.D26)
@@ -76,8 +77,8 @@ notas_latinas = {
 }
 
 # Duración de figuras
-BPM = 190
-BEAT = 60 / BPM
+BPM = 560
+BEAT = 140 / BPM
 
 dur = {
     'w': 4.0,
@@ -92,27 +93,61 @@ dur = {
 # 🎵 Melodía completa CON silencios
 melody = [
     # --- Primer estribillo ---
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'h'),
-    ('Mi4', 'q'), ('Sol4', 'q'), ('Do4', 'q'), ('Re4', 'q'),
-    ('Mi4', 'w'), ('R', 'q'),
+    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
+    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
+    ('Si5', 'q'), ('Re6', 'q'), ('Sol5', 'qd'), ('La5', 'e'),
+    ('Si5', 'w'),
 
     # --- Segundo estribillo (final corregido) ---
-    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'),
-    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'),
-    ('Mi4', 'q'), ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'e'),
+    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
+    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
+    ('Si5', 'q'), ('La5', 'q'), ('La5', 'q'), ('Si5', 'q'),
+    ('La5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
 
     # --- Tercer estribillo ---
-    ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'),
-    ('Mi4', 'q'), ('Mi4', 'qd'), ('Mi4', 'q'), ('Sol4', 'q'),
-    ('Do4', 'q'), ('Re4', 'q'), ('Mi4', 'h'), ('R', 'q'),
+    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
+    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
+    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
+    ('Sol5', 'w'), 
 
     # --- Cuarto estribillo ---
-    ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'), ('Fa4', 'q'),
-    ('Fa4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'q'), ('Re4', 'q'), ('Mi4', 'q'),
-    ('Re4', 'h'), ('Sol4', 'h'), ('R', 'w')
+    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
+    ('Re5', 'hd'), ('Re5', 'e'), ('Re5', 'e'),
+    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
+    ('Mi5', 'w'), 
+    ('Mi5', 'q'), ('Do6', 'q'), ('Si5', 'q'), ('La5', 'q'),
+    ('Fa#5', 'w'),
+    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
+    ('Si5', 'w'),
+    # --- Quinto estribillo ---
+    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
+    ('Re5', 'w'), 
+    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
+    ('Mi5', 'hd'), ('Mi5', 'q'),
+    # --- Sexto estribillo ---
+    ('Mi5', 'q'), ('Do6', 'q'), ('Si5', 'q'), ('La5', 'q'),
+    ('Re6', 'q'), ('Re6', 'q'), ('Re6', 'q'), ('Re6', 'q'),
+    ('Mi6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
+    ('Sol5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
+    
+        # --- Primer estribillo ---
+    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
+    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
+    ('Si5', 'q'), ('Re6', 'q'), ('Sol5', 'qd'), ('La5', 'e'),
+    ('Si5', 'w'),
+
+    # --- Segundo estribillo (final corregido) ---
+    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
+    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
+    ('Si5', 'q'), ('La5', 'q'), ('La5', 'q'), ('Si5', 'q'),
+    ('La5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
+
+    # --- Tercer estribillo ---
+    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
+    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
+    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
+    ('Sol5', 'w'), 
+    
 ]
 
 # Colores rotativos
@@ -130,7 +165,21 @@ def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
+def fade_to_color_async(r, g, b, steps=20, delay=0.01):
+    def fade():
+        start_r = led_red.value
+        start_g = led_green.value
+        start_b = led_blue.value
 
+        for i in range(steps + 1):
+            factor = i / steps
+            current_r = start_r + (r - start_r) * factor
+            current_g = start_g + (g - start_g) * factor
+            current_b = start_b + (b - start_b) * factor
+            set_color(current_r, current_g, current_b)
+            sleep(delay)
+
+    threading.Thread(target=fade, daemon=True).start()
 def play_note(note, figure):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
@@ -142,18 +191,18 @@ def play_note(note, figure):
 
     if freq == 0:
         buzzer.off()
-        set_color(0, 0, 0)
+        fade_to_color_async(0, 0, 0)
         sleep(duration)
         return
 
     buzzer.frequency = freq
     buzzer.value = 0.5
     r, g, b = next(color_cycle)
-    set_color(r, g, b)
+    fade_to_color_async(r, g, b)
 
     sleep(duration)
     buzzer.off()
-    set_color(0, 0, 0)
+    fade_to_color_async(0, 0, 0)
     sleep(0.05)
 
 # Reproducción principal
@@ -168,8 +217,6 @@ except KeyboardInterrupt:
 finally:
     buzzer.off()
     set_color(0, 0, 0)
-    lcd.message = "Jingle Bells \ncompleto con pausas"
-    sleep(3)
     lcd.clear()
     lcd.message = "Jingle Bells \ncompleto."
     sleep(3)

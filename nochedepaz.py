@@ -29,8 +29,8 @@ lcd = character_lcd.Character_LCD_Mono(
 custom_ñ = [
     0b00100,
     0b01010,
-    0b00001,
-    0b01111,
+    0b10000,
+    0b11110,
     0b10001,
     0b10001,
     0b10001,
@@ -76,7 +76,7 @@ notas_latinas = {
 
 # Duraciones musicales en relación al beat
 BPM = 120
-BEAT = 60 / BPM  # Una negra
+BEAT = 90 / BPM  # Una negra
 
 dur = {
     'w': 4.0,
@@ -91,37 +91,135 @@ dur = {
 # Melodía fiel de “Noche de Paz” según partitura
 melody = [
     # 1. "Noche de paz"
-    ('Sol5', 'qd', 'No'), ('La5', 'e', 'che'), ('Sol5', 'q', 'de'),
-    ('Mi5', 'hd', 'paz'),
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'paz'),
 
     # 2. "noche de amor"
-    ('Sol5', 'qd', 'No'), ('La5', 'e', 'che'), ('Sol5', 'q', 'de_a'),
-    ('Mi5', 'hd', 'mor'),
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de_a'),
+    ('Re5', 'hd', 'mor'),
 
     # 3. "todo duerme en derredor"
-    ('Re6', 'h', 'to'), ('Re6', 'q', 'do'), ('Si5', 'h', 'duer'),
-    ('Si5', 'q', 'me_en'), ('Do6', 'h', 're'), ('Do6', 'q', 'den'),
-    ('Sol5', 'hd', 'dor'), 
+    ('Do6', 'h', 'to'), ('Do6', 'q', 'do'), ('La5', 'hd', 'duerme'),
+    ('La#5', 'h', 'al_re'), ('La#5', 'q', 'de'), ('Fa5', 'h', 'dor'),
+    ('R', 'q', ''), 
 
-    # 4. "entre los astros que esparcen su luz"
-    ('La5', 'h', 'en'), ('La5', 'q', 'tre_los'), ('Do6', 'qd', 'as'),
-    ('Si5', 'e', 'tros'), ('La5', 'q', 'que_es'), ('Sol5', 'qd', 'par'),
-    ('La5', 'e', 'cen'), ('Sol5', 'q', 'su'), ('Mi5', 'hd', 'luz'),
+    # 4. "solo se escucha en un pobre portal"
+    ('Sol5', 'h', 'Solo'), ('Sol5', 'q', 'se'), ('La#5', 'qd', 'escucha'),
+    ('La5', 'e', 'en'), ('Sol5', 'q', 'un'), ('Fa5', 'qd', 'pob'),
+    ('Sol5', 'e', 'bre'), ('Fa5', 'q', 'por'), ('Re5', 'h', 'tal'),
+    ('R', 'q', ''),
 
-
-    # 5. "bella, anunciando al niño Jesús"
-    ('La5', 'h', 'be'), ('La5', 'q', 'lla_anun'), ('Do6', 'qd', 'cian'),
-    ('Si5', 'e', 'do'), ('La5', 'q', 'al'), ('Sol5', 'qd', 'ni'),
-    ('La5', 'e', '\x00o'), ('Sol5', 'q', 'Je'), ('Mi5', 'hd', 'sus'),
+    # 5. "De una Doncella la voz Celestial."
+    ('Sol5', 'h', 'De_una'), ('Sol5', 'q', 'don'), ('La#5', 'qd', 'ce'),
+    ('La5', 'e', 'lla'), ('Sol5', 'q', 'la'), ('Fa5', 'qd', 'voz'),
+    ('Sol5', 'e', 'ce'), ('Fa5', 'q', 'les'), ('Re5', 'hd', 'tial'),
     
-    # 6. "brilla en la noche de paz"
-    ('Re6', 'qd', 'be'), ('Re6', 'e', 'lla_anun'), ('Re6', 'q', 'cian'),
-    ('Fa6', 'qd', 'do'), ('Re6', 'e', 'al'), ('Si6', 'q', 'ni'),
-    ('Do6', 'hd', '\x00o'), ('Mi5', 'hd', 'Je'),
-    # 7. "brilla la estrella de paz"
-    ('Do6', 'qd', 'be'), ('Sol5', 'e', 'lla_anun'), ('Mi5', 'q', 'cian'),
-    ('Sol5', 'qd', 'do'), ('Fa5', 'e', 'al'), ('Re5', 'q', 'ni'),
-    ('Do5', 'hd', '\x00o')
+    # 6. "Duerme, mi dulce Jesús"
+    ('Do6', 'h', 'Duer'), ('Do6', 'q', 'me_mi'), ('Re#6', 'qd', 'dul'),
+    ('Do6', 'e', 'ce'), ('La5', 'q', 'Je'), ('La#5', 'hd', 'su_'),
+    ('Re6', 'h', 'us'), ('R', 'q', ''),
+    # 7. "Duerme, mi dulce Jesús."
+    ('La#5', 'qd', 'Duer'), ('Fa5', 'e', 'me'), ('Re5', 'q', 'mi'),
+    ('Fa5', 'qd', 'dul'), ('Re#5', 'e', 'ce'), ('Do5', 'q', 'Je'),
+    ('La#4', 'w', 'sus'), ('R', 'q', ''), ('R', 'q', ''),
+    
+    # 8. "Noche de paz"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'paz'),
+
+    # 9. "noche de amor"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de_a'),
+    ('Re5', 'hd', 'mor'),
+
+    # 10. "todo duerme en derredor"
+    ('Do6', 'h', 'to'), ('Do6', 'q', 'do'), ('La5', 'hd', 'duerme'),
+    ('La#5', 'h', 'al_re'), ('La#5', 'q', 'de'), ('Fa5', 'h', 'dor'),
+    ('R', 'q', ''), 
+
+    # 11. "solo se escucha en un pobre portal"
+    ('Sol5', 'h', 'Solo'), ('Sol5', 'q', 'se'), ('La#5', 'qd', 'escucha'),
+    ('La5', 'e', 'en'), ('Sol5', 'q', 'un'), ('Fa5', 'qd', 'pob'),
+    ('Sol5', 'e', 'bre'), ('Fa5', 'q', 'por'), ('Re5', 'h', 'tal'),
+    ('R', 'q', ''),
+
+    # 12. "De una Doncella la voz Celestial."
+    ('Sol5', 'h', 'De_una'), ('Sol5', 'q', 'don'), ('La#5', 'qd', 'ce'),
+    ('La5', 'e', 'lla'), ('Sol5', 'q', 'la'), ('Fa5', 'qd', 'voz'),
+    ('Sol5', 'e', 'ce'), ('Fa5', 'q', 'les'), ('Re5', 'hd', 'tial'),
+    
+    # 13. "Duerme, mi dulce Jesús"
+    ('Do6', 'h', 'Duer'), ('Do6', 'q', 'me_mi'), ('Re#6', 'qd', 'dul'),
+    ('Do6', 'e', 'ce'), ('La5', 'q', 'Je'), ('La#5', 'hd', 'su_'),
+    ('Re6', 'h', 'us'), ('R', 'q', ''),
+    # 14. "Duerme, mi dulce Jesús."
+    ('La#5', 'qd', 'Duer'), ('Fa5', 'e', 'me'), ('Re5', 'q', 'mi'),
+    ('Fa5', 'qd', 'dul'), ('Re#5', 'e', 'ce'), ('Do5', 'q', 'Je'),
+    ('La#4', 'w', 'sus'), ('R', 'q', ''), ('R', 'q', ''),
+    
+    #2
+    # 1. "Noche de paz"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'paz'),
+
+    # 2. "noche de luz"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'luz'),
+
+    # 3. "Ha nacido Jesús"
+    ('Do6', 'h', 'Ha'), ('Do6', 'q', 'na'), ('La5', 'hd', 'ci'),
+    ('La#5', 'h', 'do'), ('La#5', 'q', 'Je'), ('Fa5', 'hd', 'sus'),
+
+    # 4. "Pastorcillos que oís anunciar"
+    ('Sol5', 'h', 'Pas'), ('Sol5', 'q', 'tor'), ('La#5', 'qd', 'ci'),
+    ('La5', 'e', 'llos'), ('Sol5', 'q', 'que_o'), ('Fa5', 'qd', 'is'),
+    ('Sol5', 'e', 'a'), ('Fa5', 'q', 'nun'), ('Re5', 'hd', 'ciar'),
+
+
+    # 5. "No temáis cuando entréis a adorar"
+    ('Sol5', 'h', 'No'), ('Sol5', 'q', 'te'), ('La#5', 'qd', 'mais'),
+    ('La5', 'e', 'cuan'), ('Sol5', 'q', 'do_en'), ('Fa5', 'qd', 'treis'),
+    ('Sol5', 'e', 'a'), ('Fa5', 'q', 'ado'), ('Re5', 'hd', 'rar'),
+    
+    # 6. "Que ha nacido el amor"
+    ('Do6', 'h', 'Que'), ('Do6', 'q', 'ha_na'), ('Re#6', 'qd', 'ci'),
+    ('Do6', 'e', 'do_el'), ('La5', 'q', 'a'), ('La#5', 'hd', 'mo'),
+    ('Re6', 'hd', 'or'), 
+    # 7. "Que ha nacido el amor."
+    ('La#5', 'qd', 'Que_ha'), ('Fa5', 'e', 'na'), ('Re5', 'q', 'ci'),
+    ('Fa5', 'qd', 'do'), ('Re#5', 'e', 'el'), ('Do5', 'q', 'a'),
+    ('La#4', 'w', 'mor'), ('R', 'q', ''), ('R', 'q', ''),
+    
+    # 8. "Noche de paz"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'paz'),
+
+    # 9. "noche de luz"
+    ('Fa5', 'qd', 'No'), ('Sol5', 'e', 'che'), ('Fa5', 'q', 'de'),
+    ('Re5', 'hd', 'luz'),
+
+    # 10. "Ha nacido Jesús"
+    ('Do6', 'h', 'Ha'), ('Do6', 'q', 'Na'), ('La5', 'hd', 'ci'),
+    ('La#5', 'h', 'do'), ('La#5', 'q', 'Je'), ('Fa5', 'hd', 'sus'),
+
+
+    # 11. "Desde el Pesebre del niño Jesús"
+    ('Sol5', 'h', 'Des'), ('Sol5', 'q', 'de_el'), ('La#5', 'qd', 'Pese'),
+    ('La5', 'e', 'bre'), ('Sol5', 'q', 'del'), ('Fa5', 'qd', 'ni'),
+    ('Sol5', 'e', '\x00o'), ('Fa5', 'q', 'Je'), ('Re5', 'hd', 'sus'),
+
+    # 12. "La tierra entera se llena de luz."
+    ('Sol5', 'h', 'La_tie'), ('Sol5', 'q', 'rra'), ('La#5', 'qd', 'en'),
+    ('La5', 'e', 'te'), ('Sol5', 'q', 'ra_se'), ('Fa5', 'qd', 'lle'),
+    ('Sol5', 'e', 'na'), ('Fa5', 'q', 'de'), ('Re5', 'hd', 'luz'),
+    
+    # 13. "Porque ha nacido Jesús"
+    ('Do6', 'h', 'Por'), ('Do6', 'q', 'que_ha'), ('Re#6', 'qd', 'naci'),
+    ('Do6', 'e', 'do'), ('La5', 'q', 'Je'), ('La#5', 'hd', 'su_'),
+    ('Re6', 'hd', 'us'), 
+    # 14. "Entre canciones de amor.."
+    ('La#5', 'qd', 'Entre'), ('Fa5', 'e', 'can'), ('Re5', 'q', 'cio'),
+    ('Fa5', 'qd', 'nes'), ('Re#5', 'e', 'de'), ('Do5', 'q', 'a'),
+    ('La#4', 'w', 'mor'), ('R', 'q', ''), ('R', 'q', ''),
 ]
 
 # Número de repeticiones de la canción

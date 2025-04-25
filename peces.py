@@ -76,8 +76,8 @@ notas_latinas = {
 }
 
 # Duración de figuras
-BPM = 190
-BEAT = 60 / BPM
+BPM = 220
+BEAT = 110 / BPM
 
 dur = {
     'w': 4.0,
@@ -86,20 +86,25 @@ dur = {
     'q': 1.0,
     'qd': 1.5,
     'e': 0.5,
-    'ed': 0.75
+    'ed': 0.75,
+    'he': 0.25,
 }
 
 # 🎵 Melodía completa CON silencios
 melody = [
-    ('Do4', 'q', 'Pe'), ('Re4', 'q', 'ro'), ('Mi4', 'q', 'mi'), ('Fa4', 'q', 'ra'),
-    ('Sol4', 'q', 'có'), ('La4', 'q', 'mo'), ('Sol4', 'q', 'co'), ('Fa4', 'q', 'mó'),
-    ('Mi4', 'q', 'be'), ('Re4', 'q', 'ben'), ('Do4', 'h', 'los'),
-    ('Do4', 'q', 'pe'), ('Re4', 'q', 'ces'), ('Mi4', 'q', 'en'), ('Fa4', 'q', 'el'),
-    ('Mi4', 'q', 'rí'), ('Re4', 'q', 'o'), ('Do4', 'h', ''),
-    ('Do4', 'q', 'Pe'), ('Re4', 'q', 'ro'), ('Mi4', 'q', 'mi'), ('Fa4', 'q', 'ra'),
-    ('Sol4', 'q', 'có'), ('La4', 'q', 'mo'), ('Sol4', 'q', 'co'), ('Fa4', 'q', 'mó'),
-    ('Mi4', 'q', 'be'), ('Re4', 'q', 'ben'), ('Do4', 'h', 'por'),
-    ('Do4', 'q', 'ver'), ('Re4', 'q', 'a'), ('Mi4', 'q', 'Dios'),
+    ('R', 'q', ''), ('R', 'e', ''), ('La5', 'he', 'Pe'), ('Si5', 'he', 'ro'),
+    ('Do6', 'e', 'Mi'), ('Do6', 'e', 'ra'), ('Do6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Do6', 'q', 'be'), ('Si5', 'e', 'ben'), ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'e', 'ri'), ('Si5', 'e', 'o'), ('R', 'he', ''), ('Si5', 'he', 'pe'), ('Do6', 'he', 'ro'),
+    ('Re6', 'e', 'mi'), ('Do6', 'e', 'ra'), ('Re6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Si5', 'q', 'be'), ('Si5', 'e', 'ben'), ('Sol#5', 'e', 'por'), 
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'al'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'e', 'ci'), ('La5', 'qd', 'do'),
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Re6', 'e', 'vuel'), ('Do6', 'e', 'ben'), ('Re6', 'e', 'a'), ('Do6', 'e', 'be'),
+    ('Do', 'q', 'ver'), ('Re4', 'q', 'a'), ('Mi4', 'q', 'Dios'),
     ('Fa4', 'q', 'na'), ('Sol4', 'q', 'cer'), ('La4', 'h', ''),
 ]
 
