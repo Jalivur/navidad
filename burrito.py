@@ -1,11 +1,10 @@
 from gpiozero import PWMLED, PWMOutputDevice
 from time import sleep
 import itertools
+import random
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
-import threading
-import random
 
 # Pines del LCD
 lcd_rs = digitalio.DigitalInOut(board.D26)
@@ -78,8 +77,8 @@ notas_latinas = {
 }
 
 # Duración de figuras
-BPM = 560
-BEAT = 140 / BPM
+BPM = 690
+BEAT = 160 / BPM
 
 dur = {
     'w': 4.0,
@@ -88,66 +87,64 @@ dur = {
     'q': 1.0,
     'qd': 1.5,
     'e': 0.5,
-    'ed': 0.75
+    'ed': 0.75,
+    'he': 0.25,
 }
 
 # 🎵 Melodía completa CON silencios
 melody = [
-    # --- Primer estribillo ---
-    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
-    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
-    ('Si5', 'q'), ('Re6', 'q'), ('Sol5', 'qd'), ('La5', 'e'),
-    ('Si5', 'w'),
-
-    # --- Segundo estribillo (final corregido) ---
-    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
-    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
-    ('Si5', 'q'), ('La5', 'q'), ('La5', 'q'), ('Si5', 'q'),
-    ('La5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
-
-    # --- Tercer estribillo ---
-    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
-    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
-    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
-    ('Sol5', 'w'), 
-
-    # --- Cuarto estribillo ---
-    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
-    ('Re5', 'hd'), ('Re5', 'e'), ('Re5', 'e'),
-    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
-    ('Mi5', 'w'), 
-    ('Mi5', 'q'), ('Do6', 'q'), ('Si5', 'q'), ('La5', 'q'),
-    ('Fa#5', 'w'),
-    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
-    ('Si5', 'w'),
-    # --- Quinto estribillo ---
-    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
-    ('Re5', 'w'), 
-    ('Re5', 'q'), ('Si5', 'q'), ('La5', 'q'), ('Sol5', 'q'),
-    ('Mi5', 'hd'), ('Mi5', 'q'),
-    # --- Sexto estribillo ---
-    ('Mi5', 'q'), ('Do6', 'q'), ('Si5', 'q'), ('La5', 'q'),
-    ('Re6', 'q'), ('Re6', 'q'), ('Re6', 'q'), ('Re6', 'q'),
-    ('Mi6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
-    ('Sol5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
+    # 'Entrada 
+    ('Sol6', 'e', ''), ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''),
+    ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''), ('Mi5', 'e', ''),
+    ('Re6', 'q', ''), ('Si5', 'e', ''), ('Sol5', 'e', ''),
+    ('R', 'e', ''), ('Sol5', 'e', ''), ('Si5', 'e', ''), ('Re6', 'e', ''),
+    ('Do6', 'q', ''), ('La5', 'e', ''), ('Fa#5', 'e', ''),
+    ('R', 'e', ''), ('Do6', 'e', ''), ('Si5', 'e', ''), ('La5', 'e', ''),
+    ('Si5', 'q', ''), ('Do6', 'e', ''), ('Re6', 'h', ''),
+    ('Sol6', 'e', ''), ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''),
+    ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''), ('Mi5', 'e', ''),
+    ('Re6', 'q', ''), ('Si5', 'e', ''), ('Sol5', 'e', ''),
+    ('R', 'e', ''), ('Sol5', 'e', ''), ('Si5', 'e', ''), ('Re6', 'e', ''),
+    ('Do6', 'q', ''), ('La5', 'e', ''), ('Fa#5', 'e', ''),
+    ('R', 'e', ''), ('Do6', 'e', ''), ('Si5', 'e', ''), ('La5', 'e', ''),
+    ('Sol5', 'q', ''), ('R', 'e', ''), ('Sol5', 'e', 'con'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    # 'Estrofa 1'
+    ('Sol5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'sa'), ('Sol5', 'q', 'ba'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'voy'), ('Do6', 'q', 'ca'), 
+    ('La5', 'q', 'mi'), ('La5', 'q', 'no'), ('Sol5', 'q', 'de'), ('La5', 'q', 'be'),
+    ('Si5', 'e', 'len'), ('Sol5', 'q', '__'), ('Sol5', 'e', 'con'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Sol5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'sa'), ('Sol5', 'q', 'ba'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'voy'), ('Do6', 'q', 'ca'), 
+    ('La5', 'q', 'mi'), ('La5', 'q', 'no'), ('Sol5', 'q', 'de'), ('La5', 'q', 'be'),
+    ('Si5', 'e', 'len'), ('Sol5', 'qd', '__'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'),('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'qd', 'len'),
+    ('Sol5', 'e', 'el'), ('Sol5', 'q', 'lu'), ('Sol5', 'q', 'ce'),
+    # 'Estrofa 2'
+    ('Sol5', 'q', 'ri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'ma'), ('Sol5', 'q', '\x00a'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'ilu'), ('Do6', 'q', 'mi'), 
+    ('La5', 'q', 'na'), ('La5', 'q', 'mi'), ('Sol5', 'q', 'sen'), ('La5', 'q', 'de'),
+    ('Si5', 'e', 'ro'), ('Sol5', 'q', '__'), ('Sol5', 'e', 'el'), ('Sol5', 'q', 'lu'), ('Sol5', 'q', 'ce'),
+    ('Sol5', 'q', 'ri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'ma'), ('Sol5', 'q', '\x00a'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'ily'), ('Do6', 'q', 'mi'), 
+    ('La5', 'q', 'na'), ('La5', 'q', 'mi'), ('Sol5', 'q', 'sen'), ('La5', 'q', 'de'),
+    ('Si5', 'e', 'ro'), ('Sol5', 'qd', '__'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'),('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'w', 'len'),
+    # 'Estribillo'
     
-        # --- Primer estribillo ---
-    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
-    ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'h'),
-    ('Si5', 'q'), ('Re6', 'q'), ('Sol5', 'qd'), ('La5', 'e'),
-    ('Si5', 'w'),
-
-    # --- Segundo estribillo (final corregido) ---
-    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
-    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
-    ('Si5', 'q'), ('La5', 'q'), ('La5', 'q'), ('Si5', 'q'),
-    ('La5', 'q'), ('R', 'q'), ('Re6', 'q'), ('R', 'q'),
-
-    # --- Tercer estribillo ---
-    ('Do6', 'q'), ('Do6', 'q'), ('Do6', 'qd'), ('Do6', 'e'),
-    ('Do6', 'q'), ('Si5', 'q'), ('Si5', 'q'), ('Si5', 'e'), ('Si5', 'e'),
-    ('Re6', 'q'), ('Re6', 'q'), ('Do6', 'q'), ('La5', 'q'),
-    ('Sol5', 'w'), 
     
 ]
 
@@ -161,56 +158,41 @@ random.shuffle(color_sequence)
 # Crear un ciclo infinito de colores
 color_cycle = itertools.cycle(color_sequence)
 
-
-# Funciones
+# Función para establecer el color
 def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
-def fade_to_color_async(r, g, b, steps=20, delay=0.01):
-    def fade():
-        start_r = led_red.value
-        start_g = led_green.value
-        start_b = led_blue.value
 
-        for i in range(steps + 1):
-            factor = i / steps
-            current_r = start_r + (r - start_r) * factor
-            current_g = start_g + (g - start_g) * factor
-            current_b = start_b + (b - start_b) * factor
-            set_color(current_r, current_g, current_b)
-            sleep(delay)
-
-    threading.Thread(target=fade, daemon=True).start()
-def play_note(note, figure):
+# Función para reproducir una nota con un color
+def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
 
     # Mostrar la información en el LCD
     lcd.clear()
-    lcd.message = f"{note},({figure} - {duration:.2f}s)"
-
+    lcd.message = f"{note},({figure} - {duration:.2f}s)\n{lyric}"
 
     if freq == 0:
         buzzer.off()
-        fade_to_color_async(0, 0, 0)
+        set_color(0, 0, 0)
         sleep(duration)
         return
 
     buzzer.frequency = freq
     buzzer.value = 0.5
-    r, g, b = next(color_cycle)
-    fade_to_color_async(r, g, b)
+    r, g, b = next(color_cycle)  # Obtener el siguiente color aleatorio
+    set_color(r, g, b)
 
     sleep(duration)
     buzzer.off()
-    fade_to_color_async(0, 0, 0)
+    set_color(0, 0, 0)
     sleep(0.05)
 
 # Reproducción principal
 try:
-    for note, figure in melody:
-        play_note(note, figure)
+    for note, figure, lyric in melody:
+        play_note(note, figure, lyric)
 except KeyboardInterrupt:
     #print("Interrumpido.")
     lcd.clear()
@@ -220,6 +202,6 @@ finally:
     buzzer.off()
     set_color(0, 0, 0)
     lcd.clear()
-    lcd.message = "Jingle Bells \ncompleto."
+    lcd.message = "Burrito Sabanero \ncompleto."
     sleep(3)
     lcd.clear()

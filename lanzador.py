@@ -10,11 +10,10 @@ boton = Button(21, pull_up=True, bounce_time=0.2)
 
 # Lista de scripts
 scripts = [
-    "/home/jalivur/Desktop/navidad/estrellita.py",
     "/home/jalivur/Desktop/navidad/jingelsbells.py",
     "/home/jalivur/Desktop/navidad/nochedepaz.py",
     "/home/jalivur/Desktop/navidad/peces.py",
-    "/home/jalivur/Desktop/navidad/felicidades.py"
+    "/home/jalivur/Desktop/navidad/campana.py"
 ]
 
 ejecutando = False

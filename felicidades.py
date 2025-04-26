@@ -5,6 +5,7 @@ import threading
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
+import random
 
 # Pines del LCD
 lcd_rs = digitalio.DigitalInOut(board.D26)
@@ -95,19 +96,17 @@ melody = [
     ('R', 'q', '')
 ]
 
-# Colores arcoíris
-color_sequence = [
-    (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
-    (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
-    (0.8, 0.5, 1.0), (0.5, 1.0, 0.5), (1.0, 1.0, 1.0),
-    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0),
-    (0.5, 0.2, 0.2), (0.2, 0.5, 0.2), (0.2, 0.2, 0.5),
-    (1.0, 1.0, 0), (1.0, 0, 1.0), (1.0, 0, 0),
-    (0, 1.0, 1.0), (1.0, 1.0, 1.0), (0, 0, 0),
-    (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5),
-    (1.0, 1.0, 1.0), (1.0, 1.0, 1.0), (1.0, 1.0, 1.0)
-]
+# Generar todas las combinaciones posibles de colores RGB
+steps = [i / 10 for i in range(11)]  # Generar valores de 0.0 a 1.0 con incrementos de 0.1
+color_sequence = list(itertools.product(steps, repeat=3))  # Generar combinaciones
+
+# Mezclar la secuencia de colores de forma aleatoria
+random.shuffle(color_sequence)
+
+# Crear un ciclo infinito de colores
 color_cycle = itertools.cycle(color_sequence)
+
+
 
 def set_color(r, g, b):
     led_red.value = r

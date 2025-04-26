@@ -5,22 +5,23 @@ import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
 import threading
+import random
 
 
 # Pines del LCD
-lcd_rs = digitalio.DigitalInOut(board.D26)
-lcd_en = digitalio.DigitalInOut(board.D19)
-lcd_d4 = digitalio.DigitalInOut(board.D13)
-lcd_d5 = digitalio.DigitalInOut(board.D6)
-lcd_d6 = digitalio.DigitalInOut(board.D5)
-lcd_d7 = digitalio.DigitalInOut(board.D11)
+lcd_rs = digitalio.DigitalInOut(board.D27)
+lcd_en = digitalio.DigitalInOut(board.D20)
+lcd_d5 = digitalio.DigitalInOut(board.D13)
+lcd_d6 = digitalio.DigitalInOut(board.D6)
+lcd_d7 = digitalio.DigitalInOut(board.D5)
+lcd_d8 = digitalio.DigitalInOut(board.D11)
 
-lcd_columns = 16
-lcd_rows = 2
+lcd_columns = 17
+lcd_rows = 3
 
 lcd = character_lcd.Character_LCD_Mono(
     lcd_rs, lcd_en,
-    lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+    lcd_d5, lcd_d5, lcd_d6, lcd_d7,
     lcd_columns, lcd_rows
 )
 
@@ -126,22 +127,19 @@ dur = {
     'ed': 0.75
 }
 
-#Colores rotativos
-color_sequence = [
-    (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
-    (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
-    (0.8, 0.5, 1.0), (0.5, 1.0, 0.5), (1.0, 1.0, 1.0),
-    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0),
-    (0.5, 0.2, 0.8), (0.8, 0.2, 0.5), (0.2, 0.5, 0.8),
-    (0.5, 1.0, 1.0), (1.0, 1.0, 0.5), (1.0, 0.2, 1.0),
-    (1.0, 0.8, 0.2), (1.0, 1.0, 0), (0.2, 1.0, 0),
-    (0.2, 0.5, 1.0), (0.5, 0.2, 1.0), (1.0, 0.5, 0),
-    (1.0, 0.2, 0), (1.0, 1.0, 1), (1.0, 1.0, 1),
-    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0),
-    (0.5, 0.2, 0.8), (0.8, 0.2, 0.5), (0.2, 0.5, 0.8),
-    (0.5, 1.0, 1.0), (1.0, 1.0, 0.5), (1.0, 0.2, 1.0),
-]
+# Generar todas las combinaciones posibles de colores RGB
+steps = [i / 10 for i in range(11)]  # Generar valores de 0.0 a 1.0 con incrementos de 0.1
+color_sequence = list(itertools.product(steps, repeat=3))  # Generar combinaciones
+
+# Mezclar la secuencia de colores de forma aleatoria
+random.shuffle(color_sequence)
+
+# Crear un ciclo infinito de colores
 color_cycle = itertools.cycle(color_sequence)
+
+# Mostrar las combinaciones generadas
+for color in color_sequence:
+    print(color)
 
 
 # Funciones

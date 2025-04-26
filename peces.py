@@ -1,6 +1,7 @@
 from gpiozero import PWMLED, PWMOutputDevice
 from time import sleep
 import itertools
+import random
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
@@ -92,38 +93,134 @@ dur = {
 
 # 🎵 Melodía completa CON silencios
 melody = [
+    # 'PERO MIRA CÓMO BEBEN LOS PECES EN EL RÍO' 
     ('R', 'q', ''), ('R', 'e', ''), ('La5', 'he', 'Pe'), ('Si5', 'he', 'ro'),
     ('Do6', 'e', 'Mi'), ('Do6', 'e', 'ra'), ('Do6', 'e', 'co'), ('Do6', 'e', 'mo'),
     ('Do6', 'q', 'be'), ('Si5', 'e', 'ben'), ('Do6', 'e', 'los'),
     ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
-    ('Si5', 'e', 'ri'), ('Si5', 'e', 'o'), ('R', 'he', ''), ('Si5', 'he', 'pe'), ('Do6', 'he', 'ro'),
+    ('Si5', 'e', 'ri'), ('Si5', 'e', 'o'), ('R', 'he', ''),
+    # 'PERO MIRA CÓMO BEBEN POR VER AL DIOS NACIDO'
+    ('Si5', 'he', 'pe'), ('Do6', 'he', 'ro'),
     ('Re6', 'e', 'mi'), ('Do6', 'e', 'ra'), ('Re6', 'e', 'co'), ('Do6', 'e', 'mo'),
-    ('Si5', 'q', 'be'), ('Si5', 'e', 'ben'), ('Sol#5', 'e', 'por'), 
+    ('Si5', 'q', 'be'), ('Si5', 'e', 'ben'), ('Sol#5', 'e', 'por'),
     ('La5', 'e', 'ver'), ('Si5', 'e', 'al'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
     ('La5', 'e', 'ci'), ('La5', 'qd', 'do'),
+    # 'BEBEN Y BEBEN Y VUELVEN A BEBER'
     ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
     ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
     ('Re6', 'e', 'vuel'), ('Do6', 'e', 'ben'), ('Re6', 'e', 'a'), ('Do6', 'e', 'be'),
-    ('Do', 'q', 'ver'), ('Re4', 'q', 'a'), ('Mi4', 'q', 'Dios'),
-    ('Fa4', 'q', 'na'), ('Sol4', 'q', 'cer'), ('La4', 'h', ''),
+    ('Si5', 'qd', 'ver'),
+    # 'LOS PECES EN EL RÍO POR VER A DIOS NACER.'
+    ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'q', 'ri'), ('Si5', 'e', 'o'), ('Sol#5', 'e', 'por'),
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'a'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'q', 'cer'), ('R', 'q', ''),
+    # 'LA VIRGEN ESTÁ LAVANDO'
+    ('Do6', 'q', 'la'), ('Do6', 'e', 'vir'), ('Do6', 'e', 'gen'), 
+    ('Do6', 'q', 'es'), ('Si5', 'e', 'ta'), ('La5', 'e', 'la'),
+    ('Si5', 'e', 'va'), ('La5', 'e', 'a'), ('Si5', 'e', 'a'), ('Sol#5', 'e', 'an'),
+    ('Mi5', 'h', 'do'),
+    # 'Y TENDIENDO EN EL ROMERO'
+    ('Re6', 'q', 'y'), ('Re6', 'e', 'ten'), ('Re6', 'e', 'dien'), 
+    ('Re6', 'q', 'do'), ('Do6', 'e', 'en'), ('Si5', 'e', 'el'),
+    ('Do6', 'e', 'ro'), ('Si5', 'e', 'me'), ('Do6', 'e', 'e'), ('Si5', 'e', 'e'),
+    ('La5', 'h', 'ro'),
+    # 'LOS PAJARITOS CANTANDO'
+    ('Do6', 'q', 'los'), ('Do6', 'e', 'pa'), ('Do6', 'e', 'ja'), 
+    ('Do6', 'q', 'ri'), ('Si5', 'e', 'tos'), ('La5', 'e', 'can'),
+    ('Si5', 'e', 'ta'), ('La5', 'e', 'a'), ('Si5', 'e', 'a'), ('Sol#5', 'e', 'an'),
+    ('Mi5', 'h', 'do'),
+    # 'Y EL ROMERO FLORECIENDO'
+    ('Re6', 'q', 'y'), ('Re6', 'e', 'el'), ('Re6', 'e', 'ro'),
+    ('Re6', 'q', 'me'), ('Do6', 'e', 'ro'), ('Si5', 'e', 'flo'),
+    ('Do6', 'e', 're'), ('Si5', 'e', 'ci'), ('Do6', 'qd', 'e'), ('Si5', 'e', 'en'),
+    ('La5', 'qd', 'Do'),
+    # 'PERO MIRA CÓMO BEBEN LOS PECES EN EL RÍO' 
+    ('R', 'q', ''), ('R', 'e', ''), ('La5', 'he', 'Pe'), ('Si5', 'he', 'ro'),
+    ('Do6', 'e', 'Mi'), ('Do6', 'e', 'ra'), ('Do6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Do6', 'q', 'be'), ('Si5', 'e', 'ben'), ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'e', 'ri'), ('Si5', 'e', 'o'), ('R', 'he', ''),
+    # 'PERO MIRA CÓMO BEBEN POR VER AL DIOS NACIDO'
+    ('Si5', 'he', 'pe'), ('Do6', 'he', 'ro'),
+    ('Re6', 'e', 'mi'), ('Do6', 'e', 'ra'), ('Re6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Si5', 'q', 'be'), ('Si5', 'e', 'ben'), ('Sol#5', 'e', 'por'),
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'al'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'e', 'ci'), ('La5', 'qd', 'do'),
+    # 'BEBEN Y BEBEN Y VUELVEN A BEBER'
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Re6', 'e', 'vuel'), ('Do6', 'e', 'ben'), ('Re6', 'e', 'a'), ('Do6', 'e', 'be'),
+    ('Si5', 'qd', 'ver'),
+    # 'LOS PECES EN EL RÍO POR VER A DIOS NACER.'
+    ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'q', 'ri'), ('Si5', 'e', 'o'), ('Sol#5', 'e', 'por'),
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'a'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'q', 'cer'), ('R', 'q', ''),
+    # 'LA VIRGEN SE ESTÁ PEINANDO'
+    ('Do6', 'q', 'la'), ('Do6', 'e', 'vir'), ('Do6', 'e', 'gen'), 
+    ('Do6', 'q', 'se'), ('Si5', 'e', 'es'), ('La5', 'e', 'tá'),
+    ('Si5', 'e', 'pei'), ('La5', 'e', 'na'), ('Si5', 'e', 'a'), ('Sol#5', 'e', 'an'),
+    ('Mi5', 'h', 'do'),
+    # 'ENTRE CORTINA Y CORTINA'
+    ('Re6', 'q', 'en'), ('Re6', 'e', 'tre'), ('Re6', 'e', 'cor'), 
+    ('Re6', 'q', 'ti'), ('Do6', 'e', 'na'), ('Si5', 'e', 'y'),
+    ('Do6', 'e', 'cor'), ('Si5', 'e', 'ti'), ('Do6', 'e', 'i'), ('Si5', 'e', 'i'),
+    ('La5', 'h', 'na'),
+    # 'LOS CABELLOS SON DE ORO'
+    ('Do6', 'q', 'los'), ('Do6', 'e', 'ca'), ('Do6', 'e', 'be'), 
+    ('Do6', 'q', 'llos'), ('Si5', 'e', 'son'), ('La5', 'e', 'de'),
+    ('Si5', 'e', 'o'), ('La5', 'e', 'o'), ('Si5', 'e', 'o'), ('Sol#5', 'e', 'o'),
+    ('Mi5', 'h', 'ro'),
+    # 'Y PEINE DE PLATA FINA'
+    ('Re6', 'q', 'y'), ('Re6', 'e', 'el'), ('Re6', 'e', 'pei'),
+    ('Re6', 'q', 'ne'), ('Do6', 'e', 'de'), ('Si5', 'e', 'pla'),
+    ('Do6', 'e', 'ta'), ('Si5', 'e', 'fi'), ('Do6', 'qd', 'i'), ('Si5', 'e', 'i'),
+    ('La5', 'qd', 'na'),
+    # 'PERO MIRA CÓMO BEBEN LOS PECES EN EL RÍO' 
+    ('R', 'q', ''), ('R', 'e', ''), ('La5', 'he', 'Pe'), ('Si5', 'he', 'ro'),
+    ('Do6', 'e', 'Mi'), ('Do6', 'e', 'ra'), ('Do6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Do6', 'q', 'be'), ('Si5', 'e', 'ben'), ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'e', 'ri'), ('Si5', 'e', 'o'), ('R', 'he', ''),
+    # 'PERO MIRA CÓMO BEBEN POR VER AL DIOS NACIDO'
+    ('Si5', 'he', 'pe'), ('Do6', 'he', 'ro'),
+    ('Re6', 'e', 'mi'), ('Do6', 'e', 'ra'), ('Re6', 'e', 'co'), ('Do6', 'e', 'mo'),
+    ('Si5', 'q', 'be'), ('Si5', 'e', 'ben'), ('Sol#5', 'e', 'por'),
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'al'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'e', 'ci'), ('La5', 'qd', 'do'),
+    # 'BEBEN Y BEBEN Y VUELVEN A BEBER'
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Do6', 'q', 'be'), ('Do6', 'e', 'ben'), ('Do6', 'e', 'y'),
+    ('Re6', 'e', 'vuel'), ('Do6', 'e', 'ben'), ('Re6', 'e', 'a'), ('Do6', 'e', 'be'),
+    ('Si5', 'qd', 'ver'),
+    # 'LOS PECES EN EL RÍO POR VER A DIOS NACER.'
+    ('Do6', 'e', 'los'),
+    ('Re6', 'e', 'pe'), ('Do6', 'e', 'ces'), ('Re6', 'e', 'en'), ('Do6', 'e', 'el'),
+    ('Si5', 'q', 'ri'), ('Si5', 'e', 'o'), ('Sol#5', 'e', 'por'),
+    ('La5', 'e', 'ver'), ('Si5', 'e', 'a'), ('Do6', 'e', 'dios'), ('Si5', 'e', 'na'),
+    ('La5', 'q', 'cer'), ('R', 'q', ''),
 ]
 
-# Colores rotativos
-color_sequence = [
-    (1.0, 0.2, 0.2), (1.0, 1.0, 0.2), (0.2, 1.0, 0.4),
-    (0.2, 0.8, 1.0), (0.5, 0.3, 1.0), (1.0, 0.5, 0.8),
-    (0.8, 0.5, 1.0), (0.5, 1.0, 0.5), (1.0, 1.0, 1.0),
-    (0.2, 0.2, 0.2), (0.5, 0.5, 0.5), (1.0, 0.5, 0)
-]
+# Generar todas las combinaciones posibles de colores RGB
+steps = [i / 10 for i in range(11)]  # Generar valores de 0.0 a 1.0 con incrementos de 0.1
+color_sequence = list(itertools.product(steps, repeat=3))  # Generar combinaciones
+
+# Mezclar la secuencia de colores de forma aleatoria
+random.shuffle(color_sequence)
+
+# Crear un ciclo infinito de colores
 color_cycle = itertools.cycle(color_sequence)
 
-
-# Funciones
+# Función para establecer el color
 def set_color(r, g, b):
     led_red.value = r
     led_green.value = g
     led_blue.value = b
 
+# Función para reproducir una nota con un color
 def play_note(note, figure, lyric):
     duration = dur[figure] * BEAT
     freq = notas_latinas[note]
@@ -131,7 +228,6 @@ def play_note(note, figure, lyric):
     # Mostrar la información en el LCD
     lcd.clear()
     lcd.message = f"{note},({figure} - {duration:.2f}s)\n{lyric}"
-
 
     if freq == 0:
         buzzer.off()
@@ -141,7 +237,7 @@ def play_note(note, figure, lyric):
 
     buzzer.frequency = freq
     buzzer.value = 0.5
-    r, g, b = next(color_cycle)
+    r, g, b = next(color_cycle)  # Obtener el siguiente color aleatorio
     set_color(r, g, b)
 
     sleep(duration)
@@ -161,8 +257,6 @@ except KeyboardInterrupt:
 finally:
     buzzer.off()
     set_color(0, 0, 0)
-    lcd.message = "Peces en el Rio \ncompleto con pausas"
-    sleep(3)
     lcd.clear()
     lcd.message = "Peces en el Rio \ncompleto."
     sleep(3)
