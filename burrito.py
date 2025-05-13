@@ -93,6 +93,7 @@ dur = {
 
 # 🎵 Melodía completa CON silencios
 melody = [
+    
     # 'Entrada 
     ('Sol6', 'e', ''), ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''),
     ('Mi6', 'e', ''), ('Do6', 'e', ''), ('Sol6', 'e', ''), ('Mi5', 'e', ''),
@@ -143,9 +144,113 @@ melody = [
     ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
     ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
     ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'w', 'len'),
+    
     # 'Estribillo'
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'),
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'Qui'), ('Si5', 'e', 'Tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'q', 'Tu'), ('Mi5', 'hd', 'qui'), 
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'),
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'Qui'), ('Si5', 'e', 'Tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'w', 'Tu'),
     
+    ('La5', 'e', 'A'), ('La5', 'e', 'pu'), ('La5', 'e', 'ra'), ('La5', 'e', 'te'),
+    ('La5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Fa#5', 'q', 'rri'), ('Re5', 'qd', 'to'),
+    ('La5', 'e', 'que'), ('La5', 'e', 'ya'), ('La5', 'e', 'va'), ('La5', 'e', 'mos'),
+    ('La5', 'q', 'a'), ('Sol5', 'q', 'lle'),
+    ('Fa#5', 'w', 'gar'),
     
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', '_'),
+    ('Si5', 'e', 'tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'q', 'tu'), ('Mi5', 'hd', 'qui'),
+    
+    ('Si5', 'e', 'tu'), ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'),
+    ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'h', 'tu'), ('Sol5', 'q', 'a'), ('Sol5', 'q', 'pu'),
+    ('Sol5', 'q', 'ra'), ('Sol5', 'q', 'te'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Si5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Re5', 'q', 'va'), ('Si5', 'q', 'mos'),
+    ('La5', 'q', 'a'), ('Sol5', 'q', 'ver'), ('Fa#5', 'q', 'a'), ('La5', 'q', 'Je'),
+    ('Sol5', 'qd', 'sus'),
+    ('Sol5', 'e', 'con'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    
+    # 'Estrofa 1'
+    ('Sol5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'sa'), ('Sol5', 'q', 'ba'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'voy'), ('Do6', 'q', 'ca'), 
+    ('La5', 'q', 'mi'), ('La5', 'q', 'no'), ('Sol5', 'q', 'de'), ('La5', 'q', 'be'),
+    ('Si5', 'e', 'len'), ('Sol5', 'q', '__'), ('Sol5', 'e', 'con'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Sol5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'sa'), ('Sol5', 'q', 'ba'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'voy'), ('Do6', 'q', 'ca'), 
+    ('La5', 'q', 'mi'), ('La5', 'q', 'no'), ('Sol5', 'q', 'de'), ('La5', 'q', 'be'),
+    ('Si5', 'e', 'len'), ('Sol5', 'qd', '__'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'),('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'qd', 'len'),
+    ('Sol5', 'e', 'el'), ('Sol5', 'q', 'lu'), ('Sol5', 'q', 'ce'),
+    # 'Estrofa 2'
+    ('Sol5', 'q', 'ri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'ma'), ('Sol5', 'q', '\x00a'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'ilu'), ('Do6', 'q', 'mi'), 
+    ('La5', 'q', 'na'), ('La5', 'q', 'mi'), ('Sol5', 'q', 'sen'), ('La5', 'q', 'de'),
+    ('Si5', 'e', 'ro'), ('Sol5', 'q', '__'), ('Sol5', 'e', 'el'), ('Sol5', 'q', 'lu'), ('Sol5', 'q', 'ce'),
+    ('Sol5', 'q', 'ri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'ma'), ('Sol5', 'q', '\x00a'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'ily'), ('Do6', 'q', 'mi'), 
+    ('La5', 'q', 'na'), ('La5', 'q', 'mi'), ('Sol5', 'q', 'sen'), ('La5', 'q', 'de'),
+    ('Si5', 'e', 'ro'), ('Sol5', 'qd', '__'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'),('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'w', 'len'),
+    
+    # 'Estribillo'
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'),
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'Qui'), ('Si5', 'e', 'Tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'q', 'Tu'), ('Mi5', 'hd', 'qui'), 
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'Tu'), ('Si5', 'e', 'qui'),
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', 'Qui'), ('Si5', 'e', 'Tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'w', 'Tu'),
+    
+    ('La5', 'e', 'A'), ('La5', 'e', 'pu'), ('La5', 'e', 'ra'), ('La5', 'e', 'te'),
+    ('La5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Fa#5', 'q', 'rri'), ('Re5', 'qd', 'to'),
+    ('La5', 'e', 'que'), ('La5', 'e', 'ya'), ('La5', 'e', 'va'), ('La5', 'e', 'mos'),
+    ('La5', 'q', 'a'), ('Sol5', 'q', 'lle'),
+    ('Fa#5', 'w', 'gar'),
+    
+    ('Si5', 'e', 'Tu'), ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', '_'),
+    ('Si5', 'e', 'tu'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'q', 'tu'), ('Mi5', 'hd', 'qui'),
+    
+    ('Si5', 'e', 'tu'), ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'),
+    ('Si5', 'e', '_'), ('Si5', 'e', 'qui'), ('Si5', 'e', 'tu'), ('La5', 'e', 'qui'),
+    ('Sol5', 'h', 'tu'), ('Sol5', 'q', 'a'), ('Sol5', 'q', 'pu'),
+    ('Sol5', 'q', 'ra'), ('Sol5', 'q', 'te'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    ('Si5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Re5', 'q', 'va'), ('Si5', 'q', 'mos'),
+    ('La5', 'q', 'a'), ('Sol5', 'q', 'ver'), ('Fa#5', 'q', 'a'), ('La5', 'q', 'Je'),
+    ('Sol5', 'qd', 'sus'),
+    
+    ('Sol5', 'e', 'con'), ('Sol5', 'q', 'mi'), ('Sol5', 'q', 'bu'),
+    # 'Estrofa 1'
+    ('Sol5', 'q', 'rri'), ('Sol5', 'q', 'to'), ('Sol5', 'q', 'sa'), ('Sol5', 'q', 'ba'),
+    ('Do6', 'qd', 'ne'), ('Do6', 'e', 'ro'), ('Do6', 'q', 'voy'), ('Do6', 'q', 'ca'), 
+    ('La5', 'q', 'mi'), ('La5', 'q', 'no'), ('Sol5', 'q', 'de'), ('La5', 'q', 'be'),
+    ('Si5', 'e', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'), 
+    ('Sol5', 'q', 'si'), ('Sol5', 'q', 'me'), ('Sol5', 'h', 'ven'),
+    ('Si5', 'q', 'voy'), ('Si5', 'q', 'ca'), ('La5', 'q', 'mi'), ('La5', 'q', 'no'),
+    ('Sol5', 'q', 'de'), ('Fa#5', 'q', 'be'), ('Sol5', 'h', 'len'),
+    ('R', 'q', ''), ('R', 'q', ''),
 ]
 
 # Generar todas las combinaciones posibles de colores RGB
